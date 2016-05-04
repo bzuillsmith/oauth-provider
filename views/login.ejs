@@ -1,0 +1,11 @@
+<h1>Login</h1>
+<form method="POST" action="/login">
+    <label for="emailInput">Email:</label>
+    <input id="emailInput" type="email" name="email" />
+    <label for="passwordInput">Password:</label>
+    <input id="passwordInput" type="password" name="password" />
+    <input type="submit" value="submit"/>
+    <input type="hidden" name="redirect" value="<%= redirect %>" />
+    <input type="hidden" name="client_id" value="<%= client_id %>" />
+    <input type="hidden" name="redirect_uri" value="<%= redirect_uri %>" />
+</div>
