@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+            "target": "ES6",
+            "sourceMap": true,
+            "removeComments": true
+        },
+        "filesGlob": [
+            "test/*.ts"
+        ]
+    }
+}
