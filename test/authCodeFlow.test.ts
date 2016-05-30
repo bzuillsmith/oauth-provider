@@ -1,10 +1,24 @@
 
-import * as request from "supertest";
-import * as express from "express";
+import request = require("supertest");
+import express = require("express");
+let app = require('../app');
 
-var app = express();
+describe('App', () => {
+    
+    describe('/', () => {
+        
+        it('should fail because of invalid bearer token', function(done) {
 
-request(app)
-    .get('/', function() {
-        console.log('done');
+            request(app)
+                .get('/')
+                .set('Authorization', 'Bearer 0b79bab50daca910b000d4f1a2b675d604257e42')
+                .expect(function(res) {
+                    console.log(res.body);
+                })
+                .expect(401, done);
+                
+        });
+        
     });
+    
+});

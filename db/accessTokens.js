@@ -11,7 +11,7 @@ exports.insert = function(bearerToken, clientId, expires, userId, done) {
     done();
 };
 
-exports.find = function(bearerToken) {
+exports.findByBearerToken = function(bearerToken, done) {
     done(null, accessTokens.get(bearerToken))
 };
 

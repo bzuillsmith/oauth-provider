@@ -1,11 +1,15 @@
 {
     "compilerOptions": {
-            "target": "ES6",
-            "sourceMap": true,
-            "removeComments": true
-        },
-        "filesGlob": [
-            "test/*.ts"
-        ]
-    }
+        "target": "ES5",
+        "sourceMap": true,
+        "removeComments": true,
+        "module": "commonjs"
+    },
+    "filesGlob": [
+        "test/*.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "wwwroot"
+    ]
 }
