@@ -74,7 +74,7 @@ app.post('/login', function (req, res, next) {
   // Insert your own login mechanism
   userService.findByEmailAndPassword(req.body.email, req.body.password, function(err, user) {
     if (!user) {
-      res.render('login', {
+      return res.status(401).render('login', {
         redirect: req.body.redirect,
         client_id: req.body.client_id,
         redirect_uri: req.body.redirect_uri

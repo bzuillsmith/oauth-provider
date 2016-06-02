@@ -8,9 +8,10 @@ var users = new Map([
 
 
 exports.findByEmailAndPassword = function(email, password, done) {
+    console.log('findByEmailAndPassword()', email, password);
     var user = users.get(email);
     if(user && user.password === password)
-        done(null, user);
+        return done(null, user);
     done();
 };
 

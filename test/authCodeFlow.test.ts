@@ -19,6 +19,19 @@ describe('App', () => {
                 
         });
         
+        it('should succeed', function(done) {
+            
+            const CLIENT_QUERY_PARAMS = 'client_id=gdsestimating&redirect_uri=https://gdsestimating.com/account';
+            
+            request(app)
+                .post('/login')
+                .send('email=bzuillsmith@gmail.com&password=123123123&redirect=/oauth/authorize&' + CLIENT_QUERY_PARAMS)
+                .expect(302)
+                .expect('Location', '/oauth/authorize?' + CLIENT_QUERY_PARAMS)
+                .end(done);
+                
+        });
+        
     });
     
 });
