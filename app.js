@@ -19,7 +19,7 @@ app.use(session({
 
 app.oauth = oauthserver({
     model: require('./model'),
-    grants: ['auth_code', 'password'],
+    grants: ['authorization_code', 'password'],
     debug: true,
     accessTokenLifetime: 3600, // 1 hour
     addAcceptedScopesHeader: false,

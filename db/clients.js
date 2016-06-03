@@ -1,8 +1,8 @@
 var clients = new Map();
 
-clients.set('gdsestimating.com', {
-    clientId: 'gdsestimating.com',
-    secret: 'gdsestimating.com-secret',
+clients.set('gdsestimating', {
+    clientId: 'gdsestimating',
+    secret: 'gdsestimating-secret',
     redirectUri: 'https://gdsestimating.com/account'
 });
 

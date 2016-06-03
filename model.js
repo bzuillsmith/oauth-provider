@@ -44,10 +44,6 @@ var model = module.exports = {
         
     },
     
-    saveAuthorizationCode: function() {
-        
-    },
-    
     validateScope: function() {
         
     },
@@ -68,17 +64,10 @@ var model = module.exports = {
         accessTokenService.findByBearerToken(bearerToken, done);
     },
     
-    /**
-     * Returns an object looking like
-     *  {
-     *      client: Object,
-     *      expiresAt: Date,
-     *      redirectUri: (optional String),
-     *      user: Object
-     *  }
-     */
-    getAuthorizationCode: function() {
+    getAuthCode: function(code, done) {
+        console.log(`in getAuthCode (${code})`);
         
+        authorizationCodeService.find(code, done);
     },
     
     /**
@@ -100,6 +89,7 @@ var model = module.exports = {
     },
     
     grantTypeAllowed: function(clientId, grantType, done) {
+        console.log(`in grantTypeAllowed (${clientId}, ${grantType}`);
         return done(null, true);
     },
     
@@ -140,7 +130,7 @@ var model = module.exports = {
     
     getUserFromClient: function(client) {
         
-    }, 
+    },
     
     saveToken: function(token, client, user) {
         
