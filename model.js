@@ -2,7 +2,7 @@ var clientService = require('./db/clients');
 var userService = require('./db/users');
 var accessTokenService = require('./db/accessTokens');
 var refreshTokenService = require('./db/refreshTokens');
-
+var authorizationCodeService = require('./db/authorizationCodes');
 
 var model = module.exports = {
     
@@ -146,8 +146,13 @@ var model = module.exports = {
         
     },
     
-    saveAuthCode: function() {
-        
+    saveAuthCode: function(authCode, clientId, expires, user, done) {
+        authorizationCodeService.insert({
+            code: authCode,
+            clientId: clientId,
+            expires: expires,
+            userId: user.id
+        }, done);
     },
     
     saveAccessToken: function (token, clientId, expires, userId, done) {

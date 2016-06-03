@@ -5,5 +5,11 @@ module.exports.find = function(id, done) {
 };
 
 module.exports.insert = function(authorizationCode, done) {
+    try{
+        authorizationCodes.set(authorizationCode.code, authorizationCode);
+    }catch(err){
+        return done(err);
+    }
     
+    done();
 };

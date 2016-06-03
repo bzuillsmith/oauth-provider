@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: true
 }));
 
 app.oauth = oauthserver({
@@ -57,7 +57,7 @@ app.post('/oauth/authorize', function (req, res, next) {
   // The first param should to indicate an error
   // The second param should a bool to indicate if the user did authorize the app
   // The third param should for the user/uid (only used for passing to saveAuthCode)
-  next(null, req.body.allow === 'yes', req.session.user.id, req.session.user);
+  next(null, req.body.allow === 'yes', req.session.user);
 }));
 
 // Show login
