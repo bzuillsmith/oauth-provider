@@ -3,7 +3,8 @@ var clients = new Map();
 clients.set('gdsestimating', {
     clientId: 'gdsestimating',
     secret: 'gdsestimating-secret',
-    redirectUri: 'https://gdsestimating.com/account'
+    redirectUri: ['https://gdsestimating.com/account'],
+    grants: ['code', 'password']
 });
 
 

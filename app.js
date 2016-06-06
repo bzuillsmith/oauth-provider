@@ -1,7 +1,7 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
     session = require('express-session'),
-    oauthserver = require('oauth2-server'),
+    OAuthServer = require('oauth2-server'),
     userService = require('./db/users');
     
 var app = express();
@@ -17,7 +17,7 @@ app.use(session({
   saveUninitialized: true
 }));
 
-app.oauth = oauthserver({
+oauth = new OAuthServer({
     model: require('./model'),
     grants: ['authorization_code', 'password'],
     debug: true,
@@ -29,7 +29,7 @@ app.oauth = oauthserver({
     refreshTokenLifetime: 1209600 // 2 weeks
 });
 
-app.all('/oauth/token', app.oauth.grant());
+app.all('/oauth/token', oauth.token());
 
 // Show them the "do you authorize xyz app to access your content?" page
 app.get('/oauth/authorize', function (req, res, next) {
@@ -53,7 +53,7 @@ app.post('/oauth/authorize', function (req, res, next) {
   }
 
   next();
-}, app.oauth.authCodeGrant(function (req, next) {
+}, oauth.authorize(function (req, next) {
   // The first param should to indicate an error
   // The second param should a bool to indicate if the user did authorize the app
   // The third param should for the user/uid (only used for passing to saveAuthCode)
@@ -90,7 +90,7 @@ app.post('/login', function (req, res, next) {
   });
 });
 
-app.get('/', app.oauth.authorise(), function (req, res) {
+app.get('/', oauth.authenticate(), function (req, res) {
     res.send('Secret area');
 });
 
@@ -99,10 +99,8 @@ app.get('/public', function (req, res) {
   res.send('Public area');
 });
 
-app.use(app.oauth.errorHandler());
+app.listen(8080);
 
-app.listen(3000);
-
-console.log('OAuth Provider started on port 3000');
+console.log('OAuth Provider started on port 8080');
 
 module.exports = app;

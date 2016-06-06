@@ -45,7 +45,7 @@ var model = module.exports = {
     },
     
     validateScope: function() {
-        
+        console.log('in validateScope()');
     },
     
     /**
@@ -64,7 +64,7 @@ var model = module.exports = {
         accessTokenService.findByBearerToken(bearerToken, done);
     },
     
-    getAuthCode: function(code, done) {
+    getAuthorizationCode: function(code, done) {
         console.log(`in getAuthCode (${code})`);
         
         authorizationCodeService.find(code, done);
@@ -106,7 +106,25 @@ var model = module.exports = {
     getRefreshToken: function(refreshToken, done) {
         console.log('in getRefreshToken (refreshToken: ' + refreshToken + ')');
 
-        refreshTokenService.find(refreshToken, done);
+        refreshTokenService.find(refreshToken, function(err, refreshToken) {
+            if(err) return done(err);
+
+            clientService.find(refreshToken.clientId, function(err, client) {
+
+                userService.find(refreshToken.userId, function(err, user) {
+                    if(err) return done(err);
+
+                    done(null, {
+                        refreshToken: refreshToken.token,
+                        client: client,
+                        refreshTokenExpiresAt: refreshToken.expiresAt,
+                        scope: refreshToken.scope,
+                        user: user
+                    });
+                });
+
+            })
+        });
     },
     
     saveRefreshToken: function(token, clientId, expires, userId, done) {
@@ -116,7 +134,7 @@ var model = module.exports = {
             refreshToken: token,
             clientId: clientId,
             userId: userId,
-            expires: expires
+            expiresAt: expires
         };
 
         refreshTokenService.save(refreshToken, done);
@@ -133,28 +151,30 @@ var model = module.exports = {
     },
     
     saveToken: function(token, client, user) {
-        
-    },
-    
-    saveAuthCode: function(authCode, clientId, expires, user, done) {
-        authorizationCodeService.insert({
-            code: authCode,
-            clientId: clientId,
-            expires: expires,
+        console.log(`in saveToken(${token}, ${client}, ${user})`);
+
+        const SECONDS_UNTIL_TOKEN_EXPIRES = 3600;
+
+        accessTokenService.save({
+            accessToken: token,
+            accessTokenExpiresAt: new Date(new Date().getTime() + 1000 * SECONDS_UNTIL_TOKEN_EXPIRES),
+            clientId: client.id,
             userId: user.id
         }, done);
     },
     
-    saveAccessToken: function (token, clientId, expires, userId, done) {
-        console.log('in saveAccessToken (token: ' + token + ', clientId: ' + clientId + ', userId: ' + userId + ', expires: ' + expires + ')');
-
-        accessTokenService.save({
-            accessToken: token,
+    saveAuthorizationCode: function(code, client, user, done) {
+        authorizationCodeService.insert({
+            code: code,
             clientId: clientId,
-            userId: userId,
-            expires: expires
-        }, done);
-    }
+            userId: user.id
+        }, function(err) {
+            if(err) return done(err);
+
+            done(null, code);
+        });
+    },
+    
 };
     
 

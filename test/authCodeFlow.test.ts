@@ -72,7 +72,7 @@ describe('App', () => {
                     .end(done);
             });
             
-            it('should work when given valid query fields', (done) => {
+            it('response_type=code should work when given valid query fields', (done) => {
                 
                 agent.post('/oauth/authorize')
                     .send('allow=yes&response_type=code&' + CLIENT_QUERY_PARAMS)
@@ -81,7 +81,18 @@ describe('App', () => {
                     .end(done);
                 
             });
+
+            it('response_type=token should work when given valid query fields', (done) => {
+                
+                agent.post('/oauth/authorize')
+                    .send('allow=yes&response_type=token&' + CLIENT_QUERY_PARAMS)
+                    .expect(302)
+                    .expect('Location', /^https\:\/\/gdsestimating\.com\/account\?access_token=[a-z0-9]+$/)
+                    .end(done);
+                
+            });
             
+
         });
         
     });
@@ -128,6 +139,7 @@ describe('App', () => {
                     });
                 
             });
+
         });
         
     });
